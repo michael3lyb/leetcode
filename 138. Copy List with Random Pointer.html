@@ -1,0 +1,90 @@
+<html>
+<head>
+  <title>138. Copy List with Random Pointer</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/304720 (en-US, DDL); Windows/10.0.14393 (Win64);"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 12pt;
+    }
+  </style>
+</head>
+<body>
+<a name="7419"/>
+<h1>138. Copy List with Random Pointer</h1>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>Created:</b></td><td><i>8/1/2016 7:41 AM</i></td></tr>
+<tr><td><b>Updated:</b></td><td><i>8/10/2016 11:56 PM</i></td></tr>
+<tr><td><b>Tags:</b></td><td><i>#, Hard, Hash table, leetcode tag, Linked list</i></td></tr>
+</table>
+</div>
+<br/>
+
+<div>
+<span><div><a href="https://leetcode.com/problems/copy-list-with-random-pointer/">https://leetcode.com/problems/copy-list-with-random-pointer/</a></div><div><br/></div><div>思路：</div><div>模仿<a href="133. Clone Graph.html" style="color:#69aa35">Clone Graph</a>使用DFS直接stackoverflow了</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div><s>public class Solution {</s></div><div><s>    HashMap&lt;Integer, RandomListNode&gt; map = new HashMap();</s></div><div><s>    public RandomListNode copyRandomList(RandomListNode head) {</s></div><div><s>        if (head == null) {</s></div><div><s>            return null;</s></div><div><s>        }</s></div><div><s><br/></s></div><div><s>        if (map.containsKey(head.label)) {</s></div><div><s>            return map.get(head.label);</s></div><div><s>        }</s></div><div><s>        RandomListNode newList = new RandomListNode(head.label);</s></div><div><s>        map.put(newList.label, newList);</s></div><div><s>        newList.next = copyRandomList(head.next);</s></div><div><s>        newList.random = copyRandomList(head.random);</s></div><div><s>        return newList;</s></div><div><s>    }</s></div><div><s>}</s></div></div><div><br/></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>/*第一遍扫的时候巧妙运用next指针， 开始数组是1-&gt;2-&gt;3-&gt;4  。 然后扫描过程中 先建立copy节点 1-&gt;1`-&gt;2-&gt;2`-&gt;3-&gt;3`-&gt;4-&gt;4`, 然后第二遍copy的时候去建立边的copy， 拆分节点, 一边扫描一边拆成两个链表，这里用到两个dummy node。第一个链表变回  1-&gt;2-&gt;3 , 然后第二变成 1`-&gt;2`-&gt;3`  *///No HashMap versionpublic class Solution {<br/>
+    private void copyNext(RandomListNode head) {<br/>
+        while (head != null) {<br/>
+            RandomListNode newNode = new RandomListNode(head.label);<br/>
+            newNode.random = head.random;<br/>
+            newNode.next = head.next;<br/>
+            head.next = newNode;<br/>
+            head = head.next.next;<br/>
+        }<br/>
+    }<br/><br/>
+    private void copyRandom(RandomListNode head) {<br/>
+        while (head != null) {<br/>
+            if (head.next.random != null) {<br/>
+                head.next.random = head.random.next;<br/>
+            }<br/>
+            head = head.next.next;<br/>
+        }<br/>
+    }<br/><br/>
+    private RandomListNode splitList(RandomListNode head) {<br/>
+        RandomListNode newHead = head.next;<br/>
+        while (head != null) {<br/>
+            RandomListNode temp = head.next;<br/>
+            head.next = temp.next;<br/>
+            head = head.next;<br/>
+            if (temp.next != null) {<br/>
+                temp.next = temp.next.next;<br/>
+            }<br/>
+        }<br/>
+        return newHead;<br/>
+    }<br/><br/>
+    public RandomListNode copyRandomList(RandomListNode head) {<br/>
+        if (head == null) {<br/>
+            return null;<br/>
+        }<br/>
+        copyNext(head);<br/>
+        copyRandom(head);<br/>
+        return splitList(head);</div><div>    }</div><div>}</div></div><div><br/></div><div><br/></div><div>my solution 140ms</div><div>为什么这个版本这么慢，和</div><div>九章：循环一遍，遇到random没有的话就new</div><div>我：循环两遍，先new一遍，再把random加上</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>/**</div><div> * Definition for singly-linked list with a random pointer.</div><div> * class RandomListNode {</div><div> *     int label;</div><div> *     RandomListNode next, random;</div><div> *     RandomListNode(int x) { this.label = x; }</div><div> * };</div><div> */</div><div>public class Solution {</div><div>    public RandomListNode copyRandomList(RandomListNode head) {</div><div>        if (head == null) {</div><div>            return head;</div><div>        }</div><div>        HashMap&lt;RandomListNode, RandomListNode&gt; map = new HashMap();</div><div>        RandomListNode newNode = new RandomListNode(head.label);</div><div>        map.put(head, newNode);</div><div>        RandomListNode oriNewNode = newNode;</div><div>        RandomListNode oriHead = head;</div><div>        while(head.next != null) {</div><div>            System.out.println(head.label);</div><div>            newNode.next = new RandomListNode(head.next.label);</div><div>            map.put(head.next, newNode.next);</div><div>            head = head.next;</div><div>            newNode = newNode.next;</div><div>        }</div><div>        head = oriHead;</div><div>        newNode = oriNewNode;</div><div>        while (head != null) {</div><div>            if (head.random != null) {</div><div>                newNode.random = map.get(head.random);</div><div>            }</div><div>            head = head.next;</div><div>            newNode = newNode.next;</div><div>        }</div><div>        return oriNewNode;</div><div>    }</div><div>}</div><div><span style="font-size: 12px;"><br/></span></div></div><div><br/></div><div><br/></div><div><br/></div><div><br/></div><div>//HashMap version</div><div>7 ms</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {</div><div>    public RandomListNode copyRandomList(RandomListNode head) {<br/>
+        if (head == null) {<br/>
+            return null;<br/>
+        }<br/><br/>
+        HashMap&lt;RandomListNode, RandomListNode&gt; map = new HashMap&lt;RandomListNode, RandomListNode&gt;();<br/>
+        RandomListNode dummy = new RandomListNode(0);<br/>
+        <b>RandomListNode pre = dummy, newNode;</b><br/>
+        while (head != null) {<br/>
+            if (map.containsKey(head)) {<br/>
+                newNode = map.get(head);<br/>
+            } else {<br/>
+                newNode = new RandomListNode(head.label);<br/>
+                map.put(head, newNode);<br/>
+            }<br/>
+            pre.next = newNode;<br/><br/>
+            if (head.random != null) {<br/>
+                if (map.containsKey(head.random)) {<br/>
+                    newNode.random = map.get(head.random);<br/>
+                } else {<br/>
+                    newNode.random = new RandomListNode(head.random.label);<br/>
+                    map.put(head.random, newNode.random);<br/>
+                }<br/>
+            }<br/><br/>
+            pre = newNode;<br/>
+            head = head.next;<br/>
+        }<br/><br/>
+        return dummy.next;</div><div>    }</div><div>}</div></div><div><br/></div></span>
+</div></body></html> 

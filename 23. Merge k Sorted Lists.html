@@ -1,0 +1,71 @@
+<html>
+<head>
+  <title>23. Merge k Sorted Lists</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/304720 (en-US, DDL); Windows/10.0.14393 (Win64);"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 12pt;
+    }
+  </style>
+</head>
+<body>
+<a name="7162"/>
+<h1>23. Merge k Sorted Lists</h1>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>Created:</b></td><td><i>7/16/2016 6:08 AM</i></td></tr>
+<tr><td><b>Updated:</b></td><td><i>8/23/2016 1:37 AM</i></td></tr>
+<tr><td><b>Tags:</b></td><td><i>Divide and Conquer, Hard, Heap, leetcode tag, Linked list</i></td></tr>
+</table>
+</div>
+<br/>
+
+<div>
+<span><div><a href="https://leetcode.com/problems/merge-k-sorted-lists/">https://leetcode.com/problems/merge-k-sorted-lists/</a></div><div><br/></div><div>思路：</div><div>1     5       2 </div><div>3     7       4</div><div>9     8       6</div><div>10   20     16 </div><div><br/></div><div>min heap : 去k个sort list header</div><div><br/></div><div>heap: 1,2,5</div><div>1</div><div>heap: 2,3,5</div><div>2</div><div>heap: 3,4,5</div><div>3</div><div><br/></div><div><br/></div><div>使用  <a href="21. Merge Two Sorted Lists.html" style="color:#69aa35">21. Merge Two Sorted Lists</a> 的思路</div><div>+ divide and conquer</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {<br/>
+    /**<br/>
+    * @param lists: a list of ListNode<br/>
+    * @return: The head of one sorted list.<br/>
+    */<br/>
+    public ListNode mergeKLists(List&lt;ListNode&gt; lists) {<br/>
+        if (lists.size() == 0) {<br/>
+            return null;<br/>
+        }<br/>
+        return mergeHelper(lists, 0, lists.size() - 1);<br/>
+    }<br/>
+   <br/>
+    private ListNode mergeHelper(List&lt;ListNode&gt; lists, int start, int end) {<br/>
+        if (<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">start == end</span>) {<br/>
+            return lists.get(start);<br/>
+        }<br/>
+       <br/>
+        int mid = start + (end - start) / 2;<br/>
+        ListNode left = mergeHelper(lists, start, mid);<br/>
+        ListNode right = mergeHelper(lists, mid + 1, end);<br/>
+        return mergeTwoLists(left, right);<br/>
+    }<br/>
+   <br/>
+    private ListNode <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">mergeTwoLists</span>(ListNode list1, ListNode list2) {<br/>
+        ListNode dummy = new ListNode(0);<br/>
+        ListNode tail = dummy;<br/>
+        while (list1 != null &amp;&amp; list2 != null) {<br/>
+            if (list1.val &lt; list2.val) {<br/>
+                tail.next = list1;<br/>
+                tail = list1;<br/>
+                list1 = list1.next;<br/>
+            } else {<br/>
+                tail.next = list2;<br/>
+                tail = list2;<br/>
+                list2 = list2.next;<br/>
+            }<br/>
+        }<br/>
+        if (list1 != null) {<br/>
+            tail.next = list1;<br/>
+        } else {<br/>
+            tail.next = list2;<br/>
+        }<br/>
+       <br/>
+        return dummy.next;</div><div>    }</div><div>}</div></div><div><br/></div><div><br/></div><div>用priority queue存ListNode，自定义ListNode的比较方法，把每个list的最小的ListNode存入，每次poll出最小的</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>// version 2: <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">Heap</span></div><div>public class Solution {</div><div>    private Comparator&lt;ListNode&gt; ListNodeComparator = new Comparator&lt;ListNode&gt;() {</div><div>        public int compare(ListNode left, ListNode right) {</div><div>            if (left == null) {</div><div>                return 1;</div><div>            } else if (right == null) {</div><div>                return -1;</div><div>            }</div><div>            return left.val - right.val;</div><div>        }</div><div>    };</div><div><br/></div><div>    public ListNode mergeKLists(ArrayList&lt;ListNode&gt; lists) {</div><div>        if (lists == null || lists.size() == 0) {</div><div>            return null;</div><div>        }</div><div><br/></div><div>        Queue&lt;ListNode&gt; heap = new PriorityQueue&lt;ListNode&gt;(<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">lists.size(), ListNodeComparator</span>);</div><div>        for (int i = 0; i &lt; lists.size(); i++) {</div><div>            if (lists.get(i) != null) {</div><div>                heap.add(lists.get(i));</div><div>            }</div><div>        }</div><div><br/></div><div>        ListNode dummy = new ListNode(0);</div><div>        ListNode tail = dummy;</div><div>        while (!heap.isEmpty()) {</div><div>            ListNode head = heap.poll();</div><div>            tail.next = head;</div><div>            tail = head;</div><div>            if (head.next != null) {</div><div>                heap.add(head.next);</div><div>            }</div><div>        }</div><div>        return dummy.next;</div><div>    }</div><div>}</div></div><div><br/></div><div><br/></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>// Version 3: merge two by two/**</div><div>* Definition for ListNode.</div><div>* public class ListNode {</div><div>*    int val;</div><div>*    ListNode next;</div><div>*    ListNode(int val) {</div><div>*        this.val = val;</div><div>*        this.next = null;</div><div>*    }</div><div>* }</div><div>*/</div><div>public class Solution {</div><div>    /**</div><div>    * @param lists: a list of ListNode</div><div>    * @return: The head of one sorted list.</div><div>    */</div><div>    public ListNode mergeKLists(List&lt;ListNode&gt; lists) {</div><div>        if (lists == null || lists.size() == 0) {</div><div>            return null;</div><div>        }</div><div><br/></div><div>        while (lists.size() &gt; 1) {</div><div>            List&lt;ListNode&gt; new_lists = new ArrayList&lt;ListNode&gt;();</div><div>            for (int i = 0; i + 1 &lt; lists.size(); i += 2) {</div><div>                ListNode merged_list = merge(lists.get(i), lists.get(i+1));</div><div>                new_lists.add(merged_list);</div><div>            }</div><div>            if (lists.size() % 2 == 1) {</div><div>                new_lists.add(lists.get(lists.size() - 1));</div><div>            }</div><div>            lists = new_lists;</div><div>        }</div><div><br/></div><div>        return lists.get(0);</div><div>    }</div><div><br/></div><div>    private ListNode merge(ListNode a, ListNode b) {</div><div>        ListNode dummy = new ListNode(0);</div><div>        ListNode tail = dummy;</div><div>        while (a != null &amp;&amp; b != null) {</div><div>            if (a.val &lt; b.val) {</div><div>                tail.next = a;</div><div>                a = a.next;</div><div>            } else {</div><div>                tail.next = b;</div><div>                b = b.next;</div><div>            }</div><div>            tail = tail.next;</div><div>        }</div><div><br/></div><div>        if (a != null) {</div><div>            tail.next = a;</div><div>        } else {</div><div>            tail.next = b;</div><div>        }</div><div><br/></div><div>        return dummy.next;</div><div>    }</div><div>}</div></div><div><br/></div></span>
+</div></body></html> 

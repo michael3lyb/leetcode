@@ -1,0 +1,50 @@
+<html>
+<head>
+  <title>300. Longest Increasing Subsequence</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/304720 (en-US, DDL); Windows/10.0.14393 (Win64);"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 12pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1035"/>
+<h1>300. Longest Increasing Subsequence</h1>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>Created:</b></td><td><i>7/24/2016 4:49 AM</i></td></tr>
+<tr><td><b>Updated:</b></td><td><i>1/12/2017 5:31 PM</i></td></tr>
+<tr><td><b>Tags:</b></td><td><i>#, *, Binary Search, Dynamic Programming, leetcode tag, Medium</i></td></tr>
+</table>
+</div>
+<br/>
+
+<div>
+<span><div><a href="https://leetcode.com/problems/longest-increasing-subsequence/">https://leetcode.com/problems/longest-increasing-subsequence/</a></div><div><br/></div><div>思路：</div><div>state:</div><div>     错误的 方法：f[i]表示前i个数字中最长的LIS的长度 </div><div>     正确的方法：f[i]表示前i个数字中<span style="color: rgb(255, 0, 0);">以第i个结尾的LIS的长度</span></div><div>function: f[i] = MAX(f[j]+1, j &lt; i &amp;&amp; a[j] &lt;= a[i])</div><div>intitialize: f[0..n-1] = 1</div><div>answer: max(f[0..n-1])</div><div><br/></div><div style="box-sizing: border-box; overflow: auto; font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; display: block; padding: 9.5px; margin: 0px 0px 10px; color: rgb(51, 51, 51); border: 1px solid rgb(204, 204, 204); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(245, 245, 245);"><code style="box-sizing: border-box; font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; padding: 0px; color: inherit; border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px; background-color: transparent;">[88,4,24,82,86,1,56,74,71,9,8,18,26,53,77,87,60,27,69,17,76,23,67,14,98,13,10,83,20,43,39,29,92,31,0,30,90,70,37,59]</code></div><div><br/></div><div>1 2 3 4 1 2 3 4 5 6</div><div>1 2 3 4 2 3 4 5 6 7</div><div><br/></div><div>i = 4</div><div>f[4] = 1</div><div>nums[4] = 86</div><div>     j = 0</div><div>     nums[0] = 88</div><div>     </div><div>     j = 1</div><div>     nums[1] = 4 &lt; 86</div><div>     f[1] + 1 = 2 &gt; 1</div><div>     f[4] = 2</div><div><br/></div><div>     j = 2</div><div>     nums[2] = 24 &lt; 86</div><div>     f[2] + 1 = </div><div>     </div><div><strong style="box-sizing: border-box; font-weight: 700; color: rgb(51, 51, 51); font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; letter-spacing: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);"><span style="box-sizing: border-box;">50 ms</span></strong></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {</div><div>    public int longestIncreasingSubsequence(int[] nums) {</div><div>        int[] f = new int[nums.length];</div><div>        int max = 0;<br/>
+        for (int i = 0; i &lt; nums.length; i++) {<br/>
+            f[i] = 1;<br/>
+            for (int j = 0; j &lt; i; j++) {<br/>
+                if (<span style="color: rgb(255, 0, 0);">nums[j] &lt;= nums[i]</span>) {<br/>
+                    f[i] = <span style="color: rgb(255, 0, 0);">f[i] &gt; f[j] + 1</span> ? f[i] : f[j] + 1;<br/>
+                }<br/>
+            }<br/>
+            if (f[i] &gt; max) {<br/>
+                max = f[i];<br/>
+            }<br/>
+        }<br/>
+        return max;</div><div>    }</div><div>}</div></div><div><br/></div><div>O(nlogn) <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">Binary Search</span></div><div>2ms</div><div>The basic idea is present in the majority of solutions shared for this task, I have only tried to implement it in a manner as concise as possible without damaging the code readability.</div><div><span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">The idea is that as you iterate the sequence, you keep track of the <b>minimum value</b> a subsequence of given length might end with, for all so far possible subsequence lengths.</span> So dp[i] is the minimum value a subsequence of length i+1 might end with. Having this info, for each new number we iterate to, we can determine the longest subsequence where it can be appended using binary search. The final answer is the length of the longest subsequence we found so far.</div><div>binarySearch 没找到的话返回(-(insertion point) - 1) insertion point是应该插入的位置：the index of the first element greater than the key</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {<br/>
+    public int lengthOfLIS(int[] nums) {           <br/>
+        int[] dp = new int[nums.length];<br/>
+        int len = 0;<br/><br/>
+        for(int x : nums) {<br/>
+            int i = <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">Arrays.binarySearch</span>(dp, 0, len, x);<br/>
+            if(i &lt; 0) <span style="color: rgb(255, 0, 0);">i = -(i + 1);</span><br/>
+            dp[i] = x;<br/>
+            if(i == len) len++;</div><div>        }</div><div>        return len;<br/>
+    }<br/>
+} </div></div><div>输入 [1,3,4,2,2,3,4,5,6]</div><div style="-en-codeblock: true; box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.14902); background-position: initial initial; background-repeat: initial initial;"><div>[1, 0, 0, 0, 0, 0, 0, 0, 0]</div><div>[1, 3, 0, 0, 0, 0, 0, 0, 0]</div><div>[1, 3, 4, 0, 0, 0, 0, 0, 0]</div><div>[1, 2, 4, 0, 0, 0, 0, 0, 0]</div><div>[1, 2, 4, 0, 0, 0, 0, 0, 0]</div><div>[1, 2, 3, 0, 0, 0, 0, 0, 0]</div><div>[1, 2, 3, 4, 0, 0, 0, 0, 0]</div><div>[1, 2, 3, 4, 5, 0, 0, 0, 0]</div><div>[1, 2, 3, 4, 5, 6, 0, 0, 0]</div></div><div><br/></div><div><br/></div><div>O(nlogn) Binary Search</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {</div><div>    public int longestIncreasingSubsequence(int[] nums) {</div><div>        int[] minLast = new int[nums.length + 1];</div><div>        minLast[0] = -1;</div><div>        for (int i = 1; i &lt;= nums.length; i++) {</div><div>            minLast[i] = Integer.MAX_VALUE;</div><div>        }</div><div><br/></div><div>        for (int i = 0; i &lt; nums.length; i++) {</div><div>            // find the first number in minLast &gt; nums[i]</div><div>            int index = binarySearch(minLast, nums[i]);</div><div>            minLast[index] = nums[i];</div><div>        }</div><div><br/></div><div>        for (int i = nums.length; i &gt;= 1; i--) {</div><div>            if (minLast[i] != Integer.MAX_VALUE) {</div><div>                return i;</div><div>            }</div><div>        }</div><div><br/></div><div>        return 0;</div><div>    }</div><div><br/></div><div>    // find the first number &gt; num</div><div>    private int binarySearch(int[] minLast, int num) {</div><div>        int start = 0, end = minLast.length - 1;</div><div>        while (start + 1 &lt; end) {</div><div>            int mid = (end - start) / 2 + start;</div><div>            if (minLast[mid] == num) {</div><div>                start = mid;</div><div>            } else if (minLast[mid] &lt; num) {</div><div>                start = mid;</div><div>            } else {</div><div>                end = mid;</div><div>            }</div><div>        }</div><div><br/></div><div>        if (minLast[start] &gt; num) {</div><div>            return start;</div><div>        }</div><div>        return end;</div><div>    }</div><div>}</div></div><div><br/></div></span>
+</div></body></html> 

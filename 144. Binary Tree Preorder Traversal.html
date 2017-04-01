@@ -1,0 +1,74 @@
+<html>
+<head>
+  <title>144. Binary Tree Preorder Traversal</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/304720 (en-US, DDL); Windows/10.0.14393 (Win64);"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 12pt;
+    }
+  </style>
+</head>
+<body>
+<a name="5625"/>
+<h1>144. Binary Tree Preorder Traversal</h1>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>Created:</b></td><td><i>6/4/2016 7:40 AM</i></td></tr>
+<tr><td><b>Updated:</b></td><td><i>6/20/2016 10:19 AM</i></td></tr>
+<tr><td><b>Tags:</b></td><td><i>##, Divide and Conquer, leetcode tag, Medium, Stack, Traverse, Tree</i></td></tr>
+</table>
+</div>
+<br/>
+
+<div>
+<span><div><a href="https://leetcode.com/problems/binary-tree-preorder-traversal/">https://leetcode.com/problems/binary-tree-preorder-traversal/</a></div><div><br/></div><div>思路:</div><ol><li>递归方法</li><li>stack遍历</li><li>divide &amp; conquer</li><li><a href="http://blog.csdn.net/mxw976235955/article/details/39829973"><span style="color: rgb(0, 0, 0);">Morris 算法 (了解，不会是考点)<br/>
+space: O(1)<br/></span>http://blog.csdn.net/mxw976235955/article/details/39829973</a></li></ol><div><br/></div><div><br/></div><div><br/></div><div><br/></div><div><font color="#333333" face="Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol">java 答案</font></div><div>可以先写简单的<span style="color: rgb(255, 0, 0);">递归</span>，如果面试官不满意可以在用<span style="color: rgb(255, 0, 0);">非递归</span></div><div>time:</div><div>space: O(logn)</div><div>           O(H)   H: height of the tree</div><div style="box-sizing: border-box; padding: 8px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;"><span style="color: rgb(250, 122, 0);"><span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;"><b>Version 0:</b></span></span> <span style="color: rgb(255, 0, 0);">Non-Recursion</span> <span style="color: rgb(51, 51, 51);">(Recommend)/**</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">* Definition for binary tree<br/>
+* public class TreeNode {<br/>
+*    int val;<br/>
+*    TreeNode left;<br/>
+*    TreeNode right;<br/>
+*    TreeNode(int x) { val = x; }<br/>
+* }<br/>
+*/public class Solution {<br/>
+    public List&lt;Integer&gt; preorderTraversal(TreeNode root) {<br/>
+        <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">Stack&lt;TreeNode&gt; <span style="color: rgb(255, 0, 0);">stack</span> = new Stack&lt;TreeNode&gt;();<br/></span>         List&lt;Integer&gt; preorder = new ArrayList&lt;Integer&gt;();<br/>
+       <br/>
+        if (root == null) {<br/>
+            return preorder;<br/>
+        }<br/>
+       <br/>
+        stack.push(root);<br/>
+        while (!stack.empty()) {<br/>
+            TreeNode node = stack.pop();</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">            preorder.add(node.val);</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">            if (<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">node</span>.<span style="color: rgb(255, 0, 0);">right</span> != null) {  //因为是stack</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                stack.push(<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">node</span>.right);  //</span></span>进 先right 后left</div><div><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;"><span style="color: rgb(51, 51, 51);">            }                            //</span></span>出 先left   后right</div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">            if (<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">node</span>.<span style="color: rgb(255, 0, 0);">left</span> != null) {<br/>
+                stack.push(<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">node</span>.left);<br/>
+            }<br/>
+        }<br/>
+       <br/>
+        return preorder;</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">    }</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">}</span></span></div></div><div><span style="font-family: Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';"><span style="color: rgb(51, 51, 51);"><br/></span></span></div><div><span style="font-family: Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';"><span style="color: rgb(51, 51, 51);"><br/></span></span></div><div style="box-sizing: border-box; padding: 8px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">//Version 1:</span></span> <span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;"><span style="color: rgb(255, 0, 0);">Recursive</span></span></span>-<span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">Traverse</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">public class Solution {</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">    public ArrayList&lt;Integer&gt; preorderTraversal(TreeNode root) {<br/>
+        ArrayList&lt;Integer&gt; result = new ArrayList&lt;Integer&gt;();<br/>
+        traverse(root, result);<br/>
+        return result;<br/>
+    }<br/>
+    // 把root为跟的preorder加入result里面<br/>
+    private void traverse(TreeNode root, ArrayList&lt;Integer&gt; result) {<br/>
+        if (root == null) {<br/>
+            return;</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">        }</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">        result.add(root.val);<br/>
+        traverse(root.left, result);<br/>
+        traverse(root.right, result);</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">    }</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">}</span></span></div></div><div><span style="font-family: Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';"><span style="color: rgb(51, 51, 51);"><br/></span></span></div><div><span style="font-family: Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';"><span style="color: rgb(51, 51, 51);"><br/></span></span></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>//Version 2: <span style="color: rgb(255, 0, 0);">Divide &amp; Conquer</span></div><div>public class Solution {</div><div>    public ArrayList&lt;Integer&gt; preorderTraversal(TreeNode root) {<br/>
+        ArrayList&lt;Integer&gt; result = new ArrayList&lt;Integer&gt;();<br/>
+        // null or leaf<br/>
+        if (root == null) {<br/>
+            return result;<br/>
+        }<br/><br/>
+        // Divide<br/>
+        ArrayList&lt;Integer&gt; left = preorderTraversal(root.left);<br/>
+        ArrayList&lt;Integer&gt; right = preorderTraversal(root.right);<br/><br/>
+        // Conquer<br/>
+        result.add(root.val);<br/>
+        result.<span style="color: rgb(255, 0, 0);">addAll</span>(left);<br/>
+        result.<span style="color: rgb(255, 0, 0);">addAll</span>(right);<br/>
+        return result;</div><div>    }</div><div>}</div></div><div><span style="font-size: 13px;"><span style="font-family: Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';"><span style="color: rgb(51, 51, 51);"><br/></span></span></span></div></span>
+</div></body></html> 

@@ -1,0 +1,68 @@
+<html>
+<head>
+  <title>127. Word Ladder</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/304720 (en-US, DDL); Windows/10.0.14393 (Win64);"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 12pt;
+    }
+  </style>
+</head>
+<body>
+<a name="7305"/>
+<h1>127. Word Ladder</h1>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>Created:</b></td><td><i>8/1/2016 7:55 AM</i></td></tr>
+<tr><td><b>Updated:</b></td><td><i>8/14/2016 10:12 AM</i></td></tr>
+<tr><td><b>Tags:</b></td><td><i>breadth first search, leetcode tag, Medium</i></td></tr>
+</table>
+</div>
+<br/>
+
+<div>
+<span><div><a href="https://leetcode.com/problems/word-ladder/">https://leetcode.com/problems/word-ladder/</a></div><div><br/></div><div><img src="127. Word Ladder_files/Evernote Snapshot 20160814 140816.png" type="image/png" style="height:auto;" width="412"/></div><div><br/></div><div>139ms</div><div>BFS</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {</div><div>    public int ladderLength(String start, String end, Set&lt;String&gt; dict) {</div><div>        if (dict == null) {</div><div>            return 0;</div><div>        }</div><div><br/></div><div>        if (start.equals(end)) {</div><div>            return 1;</div><div>        }</div><div><br/></div><div>        dict.add(start);</div><div>        dict.add(end);</div><div><br/></div><div>        <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">HashSet&lt;String&gt; hash = new HashSet&lt;String&gt;();</span></div><div>        <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">Queue&lt;String&gt; queue = new LinkedList&lt;String&gt;();</span></div><div>        queue.offer(start);</div><div>        hash.add(start);</div><div><br/></div><div>        int length = 1;</div><div>        while(!queue.<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">isEmpty</span>()) {</div><div>            length++;</div><div>            int size = queue.size();</div><div>            for (int i = 0; i &lt; size; i++) {</div><div>                String word = queue.poll();</div><div>                System.out.println(&quot;words:&quot;+getNextWords(word, dict));</div><div>                for (String nextWord: getNextWords(word, dict)) {</div><div>                    if (hash.contains(nextWord)) {</div><div>                        continue;</div><div>                    }</div><div>                    if (nextWord.equals(end)) {</div><div>                        return length;</div><div>                    }</div><div><br/></div><div>                    hash.add(nextWord);</div><div>                    System.out.println(&quot;hash:&quot;+hash);</div><div><br/></div><div>                    queue.offer(nextWord);</div><div>                    System.out.println(&quot;queue:&quot; +queue);</div><div>                    System.out.println();</div><div>                }</div><div>            }</div><div>        }</div><div>        return 0;</div><div>    }</div><div><br/></div><div>    // replace character of a string at given index to a given character</div><div>    // return a new string</div><div>    private String <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">replace</span>(String s, int index, char c) {</div><div>        char[] chars = s.toCharArray();</div><div>        chars[index] = c;</div><div>        return new String(chars);</div><div>    }</div><div><br/></div><div>    // get connections with given word.</div><div>    // for example, given word = 'hot', dict = {'hot', 'hit', 'hog'}</div><div>    // it will return ['hit', 'hog']</div><div>    private ArrayList&lt;String&gt; getNextWords(String word, Set&lt;String&gt; dict) {</div><div>        ArrayList&lt;String&gt; nextWords = new ArrayList&lt;String&gt;();</div><div>        <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">for (char c = 'a'; c &lt;= 'z'; c++) {</span></div><div>            for (int i = 0; i &lt; word.length(); i++) {</div><div>                if (c == word.charAt(i)) {</div><div>                    continue;</div><div>                }</div><div>                String nextWord = <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">replace</span>(word, i, c);</div><div>                if (dict.contains(nextWord)) {</div><div>                    nextWords.add(nextWord);</div><div>                }</div><div>            }</div><div>        }</div><div>        return nextWords;</div><div>    }</div><div>}</div></div><div><br/></div><div>36ms  Two-end BFS</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {<br/><br/>
+public int ladderLength(String beginWord, String endWord, Set&lt;String&gt; wordList) {<br/>
+        Set&lt;String&gt; beginSet = new HashSet&lt;String&gt;(), endSet = new HashSet&lt;String&gt;();<br/><br/>
+        int len = 1;<br/>
+        int strLen = beginWord.length();<br/>
+        HashSet&lt;String&gt; visited = new HashSet&lt;String&gt;();<br/>
+       <br/>
+        beginSet.add(beginWord);<br/>
+        endSet.add(endWord);<br/>
+        while (!beginSet.isEmpty() &amp;&amp; !endSet.isEmpty()) {<br/>
+                if (beginSet.size() &gt; endSet.size()) {<br/>
+                        Set&lt;String&gt; set = beginSet;<br/>
+                        beginSet = endSet;<br/>
+                        endSet = set;<br/>
+                }<br/><br/>
+                Set&lt;String&gt; temp = new HashSet&lt;String&gt;();<br/>
+                for (String word : beginSet) {<br/>
+                        char[] chs = word.toCharArray();<br/><br/>
+                        for (int i = 0; i &lt; chs.length; i++) {<br/>
+                                for (char c = 'a'; c &lt;= 'z'; c++) {<br/>
+                                        char old = chs[i];<br/>
+                                        chs[i] = c;<br/>
+                                        String target = String.valueOf(chs);<br/><br/>
+                                        if (endSet.contains(target)) {<br/>
+                                                return len + 1;<br/>
+                                        }<br/><br/>
+                                        if (!visited.contains(target) &amp;&amp; wordList.contains(target)) {<br/>
+                                                temp.add(target);<br/>
+                                                visited.add(target);<br/>
+                                        }<br/>
+                                        chs[i] = old;<br/>
+                                }<br/>
+                        }<br/>
+                }<br/><br/>
+                beginSet = temp;<br/>
+                len++;<br/>
+        }<br/>
+       <br/>
+        return 0;<br/>
+}<br/>
+}</div></div><div><br/></div><div><br/></div></span>
+</div></body></html> 

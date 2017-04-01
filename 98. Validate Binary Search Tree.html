@@ -1,0 +1,75 @@
+<html>
+<head>
+  <title>98. Validate Binary Search Tree</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/304720 (en-US, DDL); Windows/10.0.14393 (Win64);"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 12pt;
+    }
+  </style>
+</head>
+<body>
+<a name="5449"/>
+<h1>98. Validate Binary Search Tree</h1>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>Created:</b></td><td><i>6/12/2016 3:52 AM</i></td></tr>
+<tr><td><b>Updated:</b></td><td><i>3/15/2017 8:58 PM</i></td></tr>
+<tr><td><b>Tags:</b></td><td><i>##, *, depth first search, leetcode tag, Medium, Tree</i></td></tr>
+</table>
+</div>
+<br/>
+
+<div>
+<span><div><a href="https://leetcode.com/problems/validate-binary-search-tree/">ttps://leetcode.com/problems/validate-binary-search-tree/</a></div><div><a href="http://www.lintcode.com/en/problem/validate-binary-search-tree/">http://www.lintcode.com/en/problem/validate-binary-search-tree/</a></div><div><br/></div><div>good solution</div><div style="-en-codeblock: true; box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.14902); background-position: initial initial; background-repeat: initial initial;"><div>TreeNode invalidNode = new TreeNode(Integer.MAX_VALUE);</div><div><br/></div><div>public boolean isValidBST(TreeNode root) {</div><div>    return isValidBST(root, null) != invalidNode;</div><div>}</div><div><br/></div><div>// 返回最大值</div><div>public TreeNode <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">isValidBST</span>(TreeNode node, TreeNode prev) {</div><div>    if( node == null ) return prev;</div><div>    prev = isValidBST(node.left, prev);</div><div>    if( prev != null &amp;&amp; node.val &lt;= prev.val ) return invalidNode;</div><div>    return isValidBST<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">(node.right, node);</span></div><div>}</div></div><div><br/></div><div><br/></div><div>思路：</div><ol><li><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;"><span style="color: rgb(51, 51, 51);">Traverse</span></span></li><li>利用BST的中序遍历是有序的</li></ol><div><br/></div><div>等价版（自己更改）</div><div><br/></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {</div><div>    <span style="color: rgb(255, 0, 0);">private int lastVal = Integer.MIN_VALUE;</span></div><div><span style="color: rgb(255, 0, 0);">//如何才能避免全局变量呢？？</span></div><div>    public boolean isValidBST(TreeNode root) {</div><div>        if (root == null) {</div><div>            return true;</div><div>        }       </div><div>//其实就这一种情况排除就可以</div><div>        <b>if (root.val == Integer.MIN_VALUE) {</b></div><div><b>            return true;</b></div><div><b>        }</b></div><div>        return helper(root);</div><div>    }</div><div>    private boolean helper(TreeNode root) {</div><div>        if (root == null) {</div><div>            return true;</div><div>        }</div><div>//左子树没问题</div><div>        if (!helper(root.left)) {</div><div>            return false;</div><div>        }</div><div>//根节点大于左子树最大</div><div>        if (lastVal &gt;= root.val) {</div><div>            return false;</div><div>        }</div><div>//</div><div>        lastVal = root.val;</div><div>//左子树最小大于根节点</div><div>        if (!helper(root.right)) {</div><div>            return false;</div><div>        }</div><div>        return true;</div><div>    }</div><div>}</div><div><span style="font-size: 12px;"><br/></span></div></div><div><br/></div><div><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;"><span style="color: rgb(51, 51, 51);"><span style="color: rgb(255, 0, 0);">firstNode是为了防止{-2147483648}的情况</span></span></span></div><div style="box-sizing: border-box; padding: 8px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;"><span style="color: rgb(51, 51, 51);">// version 1 Traverse</span></span></div><div><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;"><span style="color: rgb(51, 51, 51);">public class Solution {</span></span></div><div><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;"><span style="color: rgb(51, 51, 51);">    private int <span style="color: rgb(255, 0, 0);">lastVal</span> = Integer.MIN_VALUE;<br/>
+    private boolean <span style="color: rgb(255, 0, 0);">firstNode</span> = true;<br/>
+    public boolean isValidBST(TreeNode root) {<br/>
+        if (root == null) {<br/>
+            return true;<br/>
+        }<br/>
+        if (!isValidBST(root.<span style="color: rgb(255, 0, 0);">left</span>)) {<br/>
+            return false;<br/>
+        }<br/>
+        if (!firstNode &amp;&amp; lastVal &gt;= root.val) {<br/>
+            return false;<br/>
+        }<br/>
+        firstNode = false;<br/>
+        lastVal = root.val;<br/>
+        if (!isValidBST(root.right)) {<br/>
+            return false;<br/>
+        }<br/>
+        return true;</span></span></div><div><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;"><span style="color: rgb(51, 51, 51);">    }</span></span></div><div><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;"><span style="color: rgb(51, 51, 51);">}</span></span></div></div><div><br/></div><div><br/></div><ol start="2"><li>divide and conquer</li></ol><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>//自己改进过得写法</div><div>public class Solution {</div><div>    /**</div><div>     * @param root: The root of binary tree.</div><div>     * @return: True if the binary tree is BST, or false</div><div>     */</div><div>    private class ReturnType {</div><div>        int max;</div><div>        int min;</div><div>        boolean valide;</div><div>        ReturnType(int max, int min, boolean valide) {</div><div>            this.max = max;</div><div>            this.min = min;</div><div>            this.valide = valide;</div><div>        }</div><div>    }</div><div><br/></div><div>    public boolean isValidBST(TreeNode root) {</div><div>        if (root == null) {</div><div>            return true;</div><div>        }</div><div>        ReturnType result = helper(root);</div><div>        return result.valide;</div><div><br/></div><div>    }</div><div><br/></div><div>    private ReturnType helper(TreeNode root) {</div><div>        if (root == null) {</div><div>            return new ReturnType(<span style="color: rgb(255, 0, 0);">Integer.MIN_VALUE, Integer.MAX_VALUE</span>, true);</div><div>        }</div><div>        ReturnType left = helper(root.left);</div><div>        ReturnType right = helper(root.right);</div><div>        int maxVal = Math.max(root.val, right.max);</div><div>        int minVal = Math.min(root.val, left.min);</div><div>        boolean valide = left.valide &amp;&amp; right.valide;</div><div>        //为了方式节点是MIN_VALUE MAX_VALUE的情况</div><div>        if (<span style="color: rgb(255, 0, 0);">root.left != null</span> &amp;&amp; root.val &lt;= left.max || <span style="color: rgb(255, 0, 0);">root.right != null</span> &amp;&amp; root.val &gt;= right.min) {</div><div>            valide = false;</div><div>        }</div><div>        return new ReturnType(maxVal, minVal, valide);</div><div>    }</div><div>}</div></div><div><br/></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>// 来自九章的方法，discarded，使用自己改进的方法</div><div><s>class <span style="color: rgb(255, 0, 0);">ResultType</span> {</s></div><div><s>    boolean is_bst;<br/>
+    int maxValue, minValue;<br/>
+   <br/>
+    ResultType(boolean is_bst, int maxValue, int minValue) {<br/>
+        this.is_bst = is_bst;<br/>
+        this.maxValue = maxValue;<br/>
+        this.minValue = minValue;</s></div><div><s>    }</s></div><div><s>}</s></div><div><s><br/>
+public class Solution {<br/>
+    /**<br/>
+    * @param root: The root of binary tree.<br/>
+    * @return: True if the binary tree is BST, or false<br/>
+    */<br/>
+    public boolean isValidBST(TreeNode root) {<br/>
+        ResultType r = validateHelper(root);<br/>
+        return r.is_bst;<br/>
+    }<br/>
+   <br/>
+    private ResultType validateHelper(TreeNode root) {</s></div><div><s>        if (root == null) {</s></div><div><s>              //巧妙设计返回值</s></div><div><s>            return new ResultType(true, <span style="color: rgb(255, 0, 0);">Integer.MIN_VALUE, Integer.MAX_VALUE</span>);<br/>
+        }<br/>
+       <br/>
+        ResultType left = validateHelper(root.left);<br/>
+        ResultType right = validateHelper(root.right);</s></div><div><s>        </s></div><div><s>          <span style="color: rgb(255, 0, 0);">//先返回所有错误的情况</span></s></div><div><s>        if (!left.is_bst || !right.is_bst) {<br/>
+            // if is_bst is false then minValue and maxValue are useless<br/>
+            return new ResultType(false, 0, 0);<br/>
+        }<br/>
+       <br/>
+        if (<span style="color: rgb(255, 0, 0);">root.left != null</span> &amp;&amp; left.maxValue &gt;= root.val ||<br/>
+              <span style="color: rgb(255, 0, 0);">root.right != null</span> &amp;&amp; right.minValue &lt;= root.val) {<br/>
+            return new ResultType(false, 0, 0);</s></div><div><s>        }</s></div><div><s>        //剩下正确的</s></div><div><s>        //这样可以应对最大最小整数出现的极端情况</s></div><div><s>        return new ResultType(<span style="color: rgb(255, 0, 0);">true</span>,<br/>
+                              Math.max(root.val, right.maxValue),<br/>
+                              Math.min(root.val, left.minValue));</s></div><div><s>    }</s></div><div><s>}</s></div></div><div><br/></div><div><br/></div></span>
+</div></body></html> 

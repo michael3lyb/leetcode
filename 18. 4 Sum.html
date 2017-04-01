@@ -1,0 +1,142 @@
+<html>
+<head>
+  <title>18. 4 Sum</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/304720 (en-US, DDL); Windows/10.0.14393 (Win64);"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 12pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1022"/>
+<h1>18. 4 Sum</h1>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>Created:</b></td><td><i>8/1/2016 9:05 AM</i></td></tr>
+<tr><td><b>Updated:</b></td><td><i>1/13/2017 4:33 PM</i></td></tr>
+<tr><td><b>Tags:</b></td><td><i>Arrary, Hash table, leetcode tag, Medium, Two pointers</i></td></tr>
+</table>
+</div>
+<br/>
+
+<div>
+<span><div><a href="https://leetcode.com/problems/4sum/">https://leetcode.com/problems/4sum/</a></div><div><br/></div><div><strong style="box-sizing: border-box; font-weight: 700; color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-style: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);"><span style="box-sizing: border-box;">125 ms 太慢了</span></strong></div><div><b><span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;"><span style="background-color: rgb(255, 255, 255);"><span style="color: rgb(51, 51, 51);">my solution N^3 longn</span></span></span></b></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {</div><div>    public List&lt;List&lt;Integer&gt;&gt; fourSum(int[] nums, int target) {</div><div>        Arrays.sort(nums);</div><div>        int n = nums.length;</div><div>        List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;List&lt;Integer&gt;&gt;();</div><div>        for (int i = 0; i &lt; n - 3; i++) {</div><div>            if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) { // filter the dupicate solution</div><div>                continue;</div><div>            }</div><div>            for (int j = i + 1; j &lt; n - 2; j++) {</div><div>                if (j &gt; i + 1 &amp;&amp; nums[j] == nums[j - 1]) {  // filter the dupicate solution</div><div>                    continue;</div><div>                }</div><div>                for (int o = j + 1; o &lt; n - 1; o++) {</div><div>                    if (o &gt; j + 1 &amp;&amp; nums[o] == nums[o - 1]) {  // filter the dupicate solution</div><div>                        continue;</div><div>                    }</div><div>                    int find = target - (nums[i] + nums[j] + nums[o]);</div><div>                    int index = Arrays.binarySearch(nums, o + 1, n, find);</div><div>                    if (index &gt;= 0) {</div><div>                        List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();</div><div>                        list.add(nums[i]);</div><div>                        list.add(nums[j]);</div><div>                        list.add(nums[o]);</div><div>                        list.add(nums[index]);</div><div>                        result.add(list);</div><div>                    }</div><div>                }</div><div><br/></div><div>            }</div><div>        }</div><div>        return result;</div><div><br/></div><div>    }</div><div>}</div></div><div><br/></div><div>54ms</div><div>for for + two pointer</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {<br/>
+    public List&lt;List&lt;Integer&gt;&gt; fourSum(int[] num, int target) {<br/>
+        ArrayList&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;&gt;();<br/>
+        if(num.length&lt;4)return ans;<br/>
+        Arrays.sort(num);<br/>
+        for(int i=0; i&lt;num.length-3; i++){<br/>
+            if(i&gt;0&amp;&amp;num[i]==num[i-1])continue;<br/>
+            for(int j=i+1; j&lt;num.length-2; j++){<br/>
+                if(j&gt;i+1&amp;&amp;num[j]==num[j-1])continue;<br/>
+                int low=j+1, high=num.length-1;<br/>
+                while(low&lt;high){<br/>
+                    int sum=num[i]+num[j]+num[low]+num[high];<br/>
+                    if(sum==target){<br/>
+                        ans.add(Arrays.asList(num[i], num[j], num[low], num[high]));<br/>
+                        while(low&lt;high&amp;&amp;num[low]==num[low+1])low++;<br/>
+                        while(low&lt;high&amp;&amp;num[high]==num[high-1])high--;<br/>
+                        low++;<br/>
+                        high--;<br/>
+                    }<br/>
+                    else if(sum&lt;target)low++;<br/>
+                    else high--;<br/>
+                }<br/>
+            }<br/>
+        }<br/>
+        return ans;<br/>
+    }<br/>
+}</div></div><div><br/></div><div><a href="https://discuss.leetcode.com/topic/29585/7ms-java-code-win-over-100">7ms</a></div><div><br/></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public List&lt;List&lt;Integer&gt;&gt; fourSum(int[] nums, int target) {<br/>
+                ArrayList&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;List&lt;Integer&gt;&gt;();<br/>
+                int len = nums.length;<br/>
+                if (nums == null || len &lt; 4)<br/>
+                        return res;<br/><br/>
+                Arrays.sort(nums);<br/><br/>
+                int max = nums[len - 1];<br/>
+                if (4 * nums[0] &gt; target || 4 * max &lt; target)<br/>
+                        return res;<br/><br/>
+                int i, z;<br/>
+                for (i = 0; i &lt; len; i++) {<br/>
+                        z = nums[i];<br/>
+                        if (i &gt; 0 &amp;&amp; z == nums[i - 1])// avoid duplicate<br/>
+                                continue;<br/>
+                        if (z + 3 * max &lt; target) // z is too small<br/>
+                                continue;<br/>
+                        if (4 * z &gt; target) // z is too large<br/>
+                                break;<br/>
+                        if (4 * z == target) { // z is the boundary<br/>
+                                if (i + 3 &lt; len &amp;&amp; nums[i + 3] == z)<br/>
+                                        res.add(Arrays.asList(z, z, z, z));<br/>
+                                break;<br/>
+                        }<br/><br/>
+                        <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">threeSumForFourSum</span>(nums, target - z, i + 1, len - 1, res, z);<br/>
+                }<br/><br/>
+                return res;<br/>
+        }<br/><br/>
+        /*<br/>
+        * Find all possible distinguished three numbers adding up to the target<br/>
+        * in sorted array nums[] between indices low and high. If there are,<br/>
+        * add all of them into the ArrayList fourSumList, using<br/>
+        * fourSumList.add(Arrays.asList(z1, the three numbers))<br/>
+        */<br/>
+        public void threeSumForFourSum(int[] nums, int target, int low, int high, ArrayList&lt;List&lt;Integer&gt;&gt; fourSumList,<br/>
+                        int z1) {<br/>
+                if (low + 1 &gt;= high)<br/>
+                        return;<br/><br/>
+                int max = nums[high];<br/>
+                if (3 * nums[low] &gt; target || 3 * max &lt; target)<br/>
+                        return;<br/><br/>
+                int i, z;<br/>
+                for (i = low; i &lt; high - 1; i++) {<br/>
+                        z = nums[i];<br/>
+                        if (i &gt; low &amp;&amp; z == nums[i - 1]) // avoid duplicate<br/>
+                                continue;<br/>
+                        if (z + 2 * max &lt; target) // z is too small<br/>
+                                continue;<br/><br/>
+                        if (3 * z &gt; target) // z is too large<br/>
+                                break;<br/><br/>
+                        if (3 * z == target) { // z is the boundary<br/>
+                                if (i + 1 &lt; high &amp;&amp; nums[i + 2] == z)<br/>
+                                        fourSumList.add(Arrays.asList(z1, z, z, z));<br/>
+                                break;<br/>
+                        }<br/><br/>
+                        twoSumForFourSum(nums, target - z, i + 1, high, fourSumList, z1, z);<br/>
+                }<br/><br/>
+        }<br/><br/>
+        /*<br/>
+        * Find all possible distinguished two numbers adding up to the target<br/>
+        * in sorted array nums[] between indices low and high. If there are,<br/>
+        * add all of them into the ArrayList fourSumList, using<br/>
+        * fourSumList.add(Arrays.asList(z1, z2, the two numbers))<br/>
+        */<br/>
+        public void twoSumForFourSum(int[] nums, int target, int low, int high, ArrayList&lt;List&lt;Integer&gt;&gt; fourSumList,<br/>
+                        int z1, int z2) {<br/><br/>
+                if (low &gt;= high)<br/>
+                        return;<br/><br/>
+                if (2 * nums[low] &gt; target || 2 * nums[high] &lt; target)<br/>
+                        return;<br/><br/>
+                int i = low, j = high, sum, x;<br/>
+                while (i &lt; j) {<br/>
+                        sum = nums[i] + nums[j];<br/>
+                        if (sum == target) {<br/>
+                                fourSumList.add(Arrays.asList(z1, z2, nums[i], nums[j]));<br/><br/>
+                                x = nums[i];<br/>
+                                while (++i &lt; j &amp;&amp; x == nums[i]) // avoid duplicate<br/>
+                                        ;<br/>
+                                x = nums[j];<br/>
+                                while (i &lt; --j &amp;&amp; x == nums[j]) // avoid duplicate<br/>
+                                        ;<br/>
+                        }<br/>
+                        if (sum &lt; target)<br/>
+                                i++;<br/>
+                        if (sum &gt; target)<br/>
+                                j--;<br/>
+                }<br/>
+                return;<br/>
+        }</div></div><div><br/></div><div><br/></div><div><span style="font-size: 13px;"><span style="font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;"><span style="color: rgb(51, 51, 51);"><br/></span></span></span></div><div>对比测试：</div><div style="box-sizing: border-box; overflow: auto; font-family: Menlo, Monaco, Consolas, &quot;Courier New&quot;, monospace; font-size: 13px; display: block; padding: 9.5px; margin: 0px 0px 10px; color: rgb(51, 51, 51); border: 1px solid rgb(204, 204, 204); border-radius: 4px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(245, 245, 245);">[1,0,-1,0,-2,2]<br/>
+0<br/></div><div style="box-sizing: border-box; overflow: auto; font-family: Menlo, Monaco, Consolas, &quot;Courier New&quot;, monospace; font-size: 13px; display: block; padding: 9.5px; margin: 0px 0px 10px; color: rgb(51, 51, 51); border: 1px solid rgb(204, 204, 204); border-radius: 4px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(245, 245, 245);"><span style="box-sizing: border-box;">-2 -1 0 2 <br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">-2 -1 0 2 <br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">-2 -1 1 2 <br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">-2 0 0 2 <br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">-1 0 0 2 <br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">-1 0 0 1 </span><div><span style="box-sizing: border-box;">0 0 1 2 </span></div></div><div style="box-sizing: border-box; overflow: auto; font-family: Menlo, Monaco, Consolas, &quot;Courier New&quot;, monospace; font-size: 13px; display: block; padding: 9.5px; margin: 0px 0px 10px; color: rgb(51, 51, 51); border: 1px solid rgb(204, 204, 204); border-radius: 4px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(245, 245, 245);"><span style="box-sizing: border-box;">-2 -1 0 2 <br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">-2 -1 0 2 <br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">-2 -1 1 2 <br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">-2 0 0 2 <br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">-1 0 0 2 <br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">-1 0 0 1 </span></div></span>
+</div></body></html> 

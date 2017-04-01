@@ -1,0 +1,124 @@
+<html>
+<head>
+  <title>120. Triangle</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/304720 (en-US, DDL); Windows/10.0.14393 (Win64);"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 12pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1045"/>
+<h1>120. Triangle</h1>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>Created:</b></td><td><i>7/16/2016 8:36 PM</i></td></tr>
+<tr><td><b>Updated:</b></td><td><i>1/11/2017 12:39 PM</i></td></tr>
+<tr><td><b>Tags:</b></td><td><i>#, Arrary, Dynamic Programming, leetcode tag, Medium</i></td></tr>
+</table>
+</div>
+<br/>
+
+<div>
+<span><div><a href="https://leetcode.com/problems/triangle/">https://leetcode.com/problems/triangle/</a></div><div><br/></div><div>思路：</div><div>如果每次都选左下还是右下最后会有2^n种可能性。O(2^n)</div><div>多条路径走到同一个点，如果发现其中最好的一条路径，剩下的路径就没必要走了</div><div><br/></div><div>会有重复计算</div><div>(1, 0) -&gt; (2, 0),  <b>(2, 1)</b></div><div>(1, 1) -&gt; <b>(2, 1)</b>,  (2, 2)</div><div>去掉重复计算，时间复杂度可以降为</div><div>O(n^2)</div><div><br/></div><div>这叫做<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">记忆化搜索</span> memorize search -&gt; DP</div><div>大状态的结果依赖于小状态</div><div><br/></div><div><br/></div><div style="box-sizing: border-box; overflow: auto; font-size: 13px; display: block; padding: 9.5px; margin: 0px 0px 10px; background-color: rgb(245, 245, 245); border: 1px solid rgb(204, 204, 204); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; font-style: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;"><span style="font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;"><span style="color: rgb(51, 51, 51);">     [</span><font color="red" style="box-sizing: border-box;">2</font><span style="color: rgb(51, 51, 51);">],<br/>
+    [</span><font color="red" style="box-sizing: border-box;">3</font><span style="color: rgb(51, 51, 51);">,4],<br/>
+   [6,</span><font color="red" style="box-sizing: border-box;">5</font><span style="color: rgb(51, 51, 51);">,7],</span></span><div><span style="font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;"><span style="color: rgb(51, 51, 51);">  [4,</span><font color="red" style="box-sizing: border-box;">1</font><span style="color: rgb(51, 51, 51);">,8,3]</span></span></div></div><div>简洁版本的bottom up方法</div><div>input:</div><div>[[2],[3,4],[6,5,7],[4,1,8,3]]</div><div>output:</div><div style="box-sizing: border-box; overflow: auto; font-family: Menlo, Monaco, Consolas, &quot;Courier New&quot;, monospace; font-size: 13px; display: block; padding: 9.5px; margin: 0px 0px 10px; color: rgb(51, 51, 51); background-color: rgb(245, 245, 245); border: 1px solid rgb(204, 204, 204); border-radius: 4px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;"><span style="box-sizing: border-box;">[0, 0, 0, 0, 0]<br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">[<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">4, 1, 8, 3</span>, 0]<br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">[<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">7, 6, 10</span>, 3, 0]<br style="box-sizing: border-box;"/></span><span style="box-sizing: border-box;">[<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">9, 10</span>, 10, 3, 0]</span></div><div style="-en-codeblock: true; box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.14902); background-position: initial initial; background-repeat: initial initial;"><div>public class Solution {</div><div>    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {</div><div>        int[] A = new int[triangle.size()+1];</div><div>        for(int i=triangle.size()-1;i&gt;=0;i--){</div><div>            System.out.println(Arrays.toString(A));</div><div>            for(int j=0;j&lt;triangle.get(i).size();j++){</div><div>                A[j] = Math.min(A[j],A[j+1])+triangle.get(i).get(j);</div><div>            }</div><div>        }</div><div>        return A[0];</div><div>    }</div><div>}</div></div><div><br/></div><div><br/></div><div><br/></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>//dfs(x,y) 从x,y走到最下面一层的最短距离</div><div>//answer: dfs(0,0)</div><div>int dfs(int x, int y) {</div><div>     if (x == n) {</div><div>         return 0;</div><div>     }</div><div>     if (hash[x][y] != -1) {</div><div>          return hash[x][y];</div><div>     }</div><div>     hash[x][y] = Min(dfs(x + 1, y), dfs(x + 1, y + 1)) + a[x][y];</div><div>     return hash[x][y];</div><div>}</div></div><div><br/></div><div>同样可以模仿简洁版的bottom up，使用，用O(n)的空间完成。但是初始化都要成为MAX_VALUE</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>// version 0: <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">top-down</span></div><div>public class Solution {</div><div>    /**<br/>
+    * @param triangle: a list of lists of integers.<br/>
+    * @return: An integer, minimum path sum.<br/>
+    */<br/>
+    public int minimumTotal(int[][] triangle) {<br/>
+        if (triangle == null || triangle.length == 0) {<br/>
+            return -1;<br/>
+        }<br/>
+        if (triangle[0] == null || triangle[0].length == 0) {<br/>
+            return -1;<br/>
+        }<br/>
+       <br/>
+        // <span style="color: rgb(255, 0, 0);">state</span>: f[x][y] = minimum path value from 0,0 to x,y<br/>
+        int n = triangle.length;<br/>
+        int[][] f = new int[n][n];<br/>
+       <br/>
+        // <span style="color: rgb(255, 0, 0);">initialize</span><br/>
+        f[0][0] = triangle[0][0];<br/>
+        for (int i = 1; i &lt; n; i++) {<br/>
+            f[i][0] = f[i - 1][0] + triangle[i][0];<br/>
+            f[i][i] = f[i - 1][i - 1] + triangle[i][i];<br/>
+        }<br/>
+       <br/>
+        // top down <span style="color: rgb(255, 0, 0);">function</span><br/>
+        for (int i = 1; i &lt; n; i++) {<br/>
+            for (int j = 1; j &lt; i; j++) {<br/>
+                f[i][j] = Math.min(f[i - 1][j], f[i - 1][j - 1]) + triangle[i][j];<br/>
+            }<br/>
+        }<br/>
+       <br/>
+        // <span style="color: rgb(255, 0, 0);">answer</span><br/>
+        int best = f[n - 1][0];<br/>
+        for (int i = 1; i &lt; n; i++) {<br/>
+            best = Math.min(best, f[n - 1][i]);<br/>
+        }<br/>
+        return best;</div><div>    }</div><div>}</div></div><div><br/></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>//Version 1: Bottom-Up</div><div>public class Solution {</div><div>    /**<br/>
+    * @param triangle: a list of lists of integers.<br/>
+    * @return: An integer, minimum path sum.<br/>
+    */<br/>
+    public int minimumTotal(int[][] triangle) {<br/>
+        if (triangle == null || triangle.length == 0) {<br/>
+            return -1;<br/>
+        }<br/>
+        if (triangle[0] == null || triangle[0].length == 0) {<br/>
+            return -1;<br/>
+        }<br/>
+       <br/>
+        // state: f[x][y] = minimum path value from x,y to bottom<br/>
+        int n = triangle.length;<br/>
+        int[][] f = new int[n][n];<br/>
+       <br/>
+        // initialize<br/>
+        for (int i = 0; i &lt; n; i++) {<br/>
+            f[n - 1][i] = triangle[n - 1][i];<br/>
+        }<br/>
+       <br/>
+        // bottom up<br/>
+        for (int i = n - 2; i &gt;= 0; i--) {<br/>
+            for (int j = 0; j &lt;= i; j++) {<br/>
+                <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">f[i][j] = Math.min(f[i + 1][j], f[i + 1][j + 1]) + triangle[i][j];</span><br/>
+            }<br/>
+        }<br/>
+       <br/>
+        // answer<br/>
+        return f[0][0];</div><div>    }</div><div>}</div></div><div><br/></div><div>recursive</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>//Version 2 : Memorize Search</div><div>public class Solution {</div><div>    private int n;<br/>
+    private int[][] minSum;<br/>
+    private int[][] triangle;<br/><br/>
+    private int <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">search</span>(int x, int y) {<br/>
+        if (x &gt;= n) {<br/>
+            return 0;<br/>
+        }<br/><br/>
+        if (minSum[x][y] != Integer.MAX_VALUE) {<br/>
+            return minSum[x][y];<br/>
+        }<br/><br/>
+        minSum[x][y] = Math.min(search(x + 1, y), search(x + 1, y + 1))<br/>
+            + triangle[x][y];<br/>
+        return minSum[x][y];<br/>
+    }<br/><br/>
+    public int minimumTotal(int[][] triangle) {<br/>
+        if (triangle == null || triangle.length == 0) {<br/>
+            return -1;<br/>
+        }<br/>
+        if (triangle[0] == null || triangle[0].length == 0) {<br/>
+            return -1;<br/>
+        }<br/>
+       <br/>
+        this.n = triangle.length;<br/>
+        this.triangle = triangle;<br/>
+        this.minSum = new int[n][n];<br/><br/>
+        for (int i = 0; i &lt; n; i++) {<br/>
+            for (int j = 0; j &lt; n; j++) {<br/>
+                minSum[i][j] = Integer.MAX_VALUE;<br/>
+            }<br/>
+        }<br/><br/>
+        return search(0, 0);</div><div>    }</div><div>}</div></div><div><br/></div><div>my answer</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {</div><div>    public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {</div><div>        int n = triangle.size();</div><div>        if (n == 1) {</div><div>            return  triangle.get(0).get(0);</div><div>        }</div><div>        int[][] f = new int[n + 1][n + 1];</div><div>        f[0][0] = 0;</div><div>        for (int i = 1; i &lt;= n; i++) {</div><div>            f[i][i] = triangle.get(i - 1).get(i - 1) + f[i - 1][i - 1];</div><div>            f[i][1] = triangle.get(i - 1).get(0) + f[i - 1][1];</div><div>        }</div><div>        int minPre = Math.min(f[n][1], f[n][n]);</div><div>        if (n == 2) {</div><div>            return Math.min(f[2][1],f[2][2]);   </div><div>        }</div><div><br/></div><div>        int min = Integer.MAX_VALUE;</div><div>        int i,j = 0;</div><div>        for (i = 3;i &lt;= n; i++) {</div><div>            for (j = 2;j &lt;= i - 1; j++) {</div><div>                f[i][j] = triangle.get(i - 1).get(j - 1) + Math.min(f[i - 1][j - 1], f[i - 1][j]);</div><div>                if (i == n) {</div><div>                    if (f[i][j] &lt; min) {</div><div>                        min = f[i][j];</div><div>                    }</div><div>                }</div><div>            }</div><div><br/></div><div>        }</div><div>        return Math.min(min,minPre);</div><div>    }</div><div>}</div></div><div><br/></div></span>
+</div></body></html> 

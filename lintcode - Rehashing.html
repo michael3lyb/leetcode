@@ -1,0 +1,57 @@
+<html>
+<head>
+  <title>lintcode - Rehashing</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/304720 (en-US, DDL); Windows/10.0.14393 (Win64);"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 12pt;
+    }
+  </style>
+</head>
+<body>
+<a name="7271"/>
+<h1>lintcode - Rehashing</h1>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>Created:</b></td><td><i>8/1/2016 8:25 AM</i></td></tr>
+<tr><td><b>Updated:</b></td><td><i>8/16/2016 4:05 AM</i></td></tr>
+<tr><td><b>Tags:</b></td><td><i>#, Hash table, leetcode tag, Medium</i></td></tr>
+</table>
+</div>
+<br/>
+
+<div>
+<span><div><a href="http://www.lintcode.com/en/problem/rehashing/">http://www.lintcode.com/en/problem/rehashing/</a></div><div><br/></div><div>思路和答案完全一样，注意要<span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">new node，不然肯定不对</span></div><div style="box-sizing: border-box; padding: 8px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">public class Solution {</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">    /**</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">     * @param hashTable: A list of The first node of linked list</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">     * @return: A list of The first node of linked list which have twice size</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">     */</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">    public ListNode[] rehashing(ListNode[] hashTable) {</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">        int n = hashTable.length;</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">        int newN = 2 * n;</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">        ListNode[] newList = new ListNode[newN];</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">        for (ListNode node : hashTable) {</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">            //System.out.println(node);</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">            while (node != null) {</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                int index = (node.val % newN + newN) % newN;</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                if (newList[index] == null) {</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                    <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">newList[index] = new ListNode(node.val);</span></span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                } else {</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                    ListNode tmp = newList[index];</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                    while (tmp.next != null) {</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                        tmp = tmp.next;</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                    }</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                    <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">tmp.next = new ListNode(</span></span></span><span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">node.val<span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">);</span></span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                }</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">                node = node.next;</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">            }</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">        }</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">        return newList;</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">    }</span></span></div><div><span style="color: rgb(51, 51, 51);"><span style="font-family: Monaco, Menlo, Consolas, 'Courier New', monospace;">};</span></span></div></div><div><br/></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {<br/>
+    /**<br/>
+    * @param hashTable: A list of The first node of linked list<br/>
+    * @return: A list of The first node of linked list which have twice size<br/>
+    */<br/>
+    public ListNode[] rehashing(ListNode[] hashTable) {<br/>
+        // write your code here<br/>
+        if (hashTable.length &lt;= 0) {<br/>
+            return hashTable;<br/>
+        }<br/>
+        int newcapacity = 2 * hashTable.length;<br/>
+        ListNode[] newTable = new ListNode[newcapacity];<br/>
+        for (int i = 0; i &lt; hashTable.length; i++) {<br/>
+            while (hashTable[i] != null) {<br/>
+                int <span style="background-color: rgb(255, 250, 165);-evernote-highlight:true;">newindex</span><br/>
+                = (hashTable[i].val % newcapacity + newcapacity) % newcapacity;<br/>
+                if (newTable[newindex] == null) {<br/>
+                    newTable[newindex] = new ListNode(hashTable[i].val);<br/>
+                  // newTable[newindex].next = null;<br/>
+                } else {<br/>
+                    ListNode dummy = newTable[newindex];<br/>
+                    while (dummy.next != null) {<br/>
+                        dummy = dummy.next;<br/>
+                    }<br/>
+                    dummy.next = new ListNode(hashTable[i].val);<br/>
+                }<br/>
+                hashTable[i] = hashTable[i].next;<br/>
+            }<br/>
+        }<br/>
+        return newTable;</div><div>    }</div><div>}</div></div><div><br/></div></span>
+</div></body></html> 

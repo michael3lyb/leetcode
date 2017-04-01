@@ -1,0 +1,85 @@
+<html>
+<head>
+  <title>Majority Number III - lincode</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/304720 (en-US, DDL); Windows/10.0.14393 (Win64);"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 12pt;
+    }
+  </style>
+</head>
+<body>
+<a name="4960"/>
+<h1>Majority Number III - lincode</h1>
+<div>
+<table bgcolor="#D4DDE5" border="0">
+<tr><td><b>Created:</b></td><td><i>6/4/2016 3:16 AM</i></td></tr>
+<tr><td><b>Updated:</b></td><td><i>6/26/2016 11:37 PM</i></td></tr>
+<tr><td><b>Tags:</b></td><td><i>##, Arrary, leetcode tag, Medium</i></td></tr>
+</table>
+</div>
+<br/>
+
+<div>
+<span><div><a href="http://www.lintcode.com/en/problem/majority-number-iii/">http://www.lintcode.com/en/problem/majority-number-iii/</a></div><div><br/></div><div>思路：</div><div>     要求</div><ol><li>储存k-1个candidate</li><li>O(1) 查询是否在这个集合汇总</li><li>O(1) count++</li><li>O(1) 插入</li><li>统计集合中的元素个数</li><li>对集合的所有数 count --</li></ol><div><br/></div><div>选择哪个数据结构呢？</div><div>根据key查询value就用hash table</div><div><br/></div><div>时间复杂度：看每个元素的操作次数 -&gt; 每个元素进出数据结构几次</div><div><br/></div><div>hash在java中怎么实现  </div><div><br/></div><div><br/></div><div> 九章的答案：2362 ms</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {<br/>
+    /**<br/>
+    * @param nums: A list of integers<br/>
+    * @param k: As described<br/>
+    * @return: The majority number<br/>
+    */<br/>
+    public int majorityNumber(ArrayList&lt;Integer&gt; nums, int k) {<br/>
+        // count at most k keys.<br/>
+        <span style="color: rgb(255, 0, 0);">HashMap</span>&lt;Integer, Integer&gt; counters = new <span style="color: rgb(255, 0, 0);">HashMap</span>&lt;Integer, Integer&gt;();<br/>
+        for (Integer i : nums) {<br/>
+            if (!counters.<span style="color: rgb(255, 0, 0);">containsKey</span>(i)) {<br/>
+                counters.<span style="color: rgb(255, 0, 0);">put</span>(i, 1);<br/>
+            } else {<br/>
+                counters.put(i, counters.<span style="color: rgb(255, 0, 0);">get</span>(i) + 1);<br/>
+            }<br/>
+           <br/>
+            if (counters.size() &gt;= k) {<br/>
+                <span style="color: rgb(255, 0, 0);">removeKey</span>(counters);<br/>
+            }<br/>
+        }<br/>
+       <br/>
+        // corner case<br/>
+        if (counters.size() == 0) {<br/>
+            return Integer.MIN_VALUE;<br/>
+        }<br/>
+       <br/>
+        // recalculate counters<br/>
+        for (Integer i : counters.<span style="color: rgb(255, 0, 0);">keySet</span>()) {<br/>
+            counters.put(i, 0);<br/>
+        }<br/>
+        for (Integer i : nums) {<br/>
+            if (counters.containsKey(i)) {<br/>
+                counters.put(i, counters.get(i) + 1);<br/>
+            }<br/>
+        }<br/>
+       <br/>
+        // find the max key<br/>
+        int maxCounter = 0, maxKey = 0;<br/>
+        for (Integer i : counters.keySet()) {<br/>
+            if (counters.get(i) &gt; maxCounter) {<br/>
+                maxCounter = counters.get(i);<br/>
+                maxKey = i;<br/>
+            }<br/>
+        }<br/>
+       <br/>
+        return maxKey;<br/>
+    }</div><div>  </div><div>    //太麻烦了</div><div>    private void <span style="color: rgb(255, 0, 0);">removeKey</span>(HashMap&lt;Integer, Integer&gt; counters) {<br/>
+        Set&lt;Integer&gt; keySet = counters.keySet();<br/>
+        List&lt;Integer&gt; removeList = new ArrayList&lt;&gt;();<br/>
+        for (Integer key : keySet) {<br/>
+            counters.put(key, counters.get(key) - 1);<br/>
+            if (counters.get(key) == 0) {<br/>
+                removeList.add(key);<br/>
+            }<br/>
+        }<br/>
+        for (Integer key : removeList) {<br/>
+            counters.<span style="color: rgb(255, 0, 0);">remove</span>(key);<br/>
+        }</div><div>    }</div><div>}</div></div><div><br/></div><div>我的答案：1836 ms  竟然比答案还快</div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>public class Solution {</div><div>    /**</div><div>     * @param nums: A list of integers</div><div>     * @param k: As described</div><div>     * @return: The majority number</div><div>     */</div><div>    public int majorityNumber(ArrayList&lt;Integer&gt; nums, int k) {</div><div>        int[] counts = new int[k-1];</div><div>        int[] cands = new int[k-1];</div><div>        if (nums == null || k &lt; 1) {</div><div>            return 0;</div><div>        }</div><div>        if (k == 1) {</div><div>            return nums.get(0);</div><div>        }</div><div><br/></div><div>        for (int i = 0; i &lt; nums.size(); i++) {</div><div>            int j = 0;</div><div>          for (; j &lt; k-1; j++) {</div><div>                if (counts[j] == 0) {</div><div>                      continue;</div><div>                }</div><div>                else if (cands[j] == nums.get(i)) {</div><div>                    counts[j]++;</div><div>                    break;</div><div>                }</div><div>                else {</div><div>                    continue;</div><div>                }</div><div>            }</div><div>            if (j == (k - 1)) {</div><div>                for (j = 0; j &lt; k-1; j++) {</div><div>                    if (counts[j] == 0) {</div><div>                        cands[j] = nums.get(i);</div><div>                        counts[j]++;</div><div>                        break;</div><div>                    }</div><div>                    else {</div><div>                        continue;</div><div>                    }</div><div>                } </div><div>            }</div><div>            if (j == (k-1)) {</div><div>                for (int o = 0; o &lt; k - 1; o++) {</div><div>                    counts[o]--;</div><div>                }</div><div>            }</div><div>       }</div><div>       for (int j = 0; j &lt; k-1; j++) {</div><div>            counts[j] = 0;</div><div>       }</div><div>       int max = 0;</div><div>       int result = 0;</div><div>       for (int i = 0; i &lt; nums.size(); i++) {</div><div>           for (int j = 0; j &lt; k-1; j++) {</div><div>               if (nums.get(i) == cands[j]) {</div><div>                   counts[j]++;</div><div>                   if (counts[j] &gt; max) {</div><div>                       max = counts[j];</div><div>                       result = cands[j];</div><div>                   }</div><div>                   break;</div><div>               }</div><div>           }</div><div>       }</div><div>       return result;</div><div>    }</div><div>}</div><div><span style="font-size: 12px;"><br/></span></div></div><div><br/></div><div>python：<span style="color: rgb(255, 0, 0);">好简洁  347 ms</span></div><div style="box-sizing: border-box; padding: 8px; font-family: Monaco, Menlo, Consolas, 'Courier New', monospace; color: rgb(51, 51, 51); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; background-color: rgb(251, 250, 248); border: 1px solid rgba(0, 0, 0, 0.148438);"><div>    def majorityNumber(self, nums, k):</div><div>        counts = {}</div><div>        max = 0</div><div>        for num in nums:</div><div>            counts[num] = counts.get(num, 0) + 1</div><div>            if (counts[num] &gt; max):</div><div>                max = counts[num]</div><div>                maj = num</div><div>        return maj;</div></div><div><span style="color: rgb(255, 0, 0);"><br/></span></div></span>
+</div></body></html> 
